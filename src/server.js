@@ -18,4 +18,18 @@ const server = http.createServer(app);
 // http, websocket 모두를 사용하도록 설정
 const wss = new WebSocket.Server({ server });
 
+wss.on("connection", (socket) => {
+    console.log("Connected to browser ✅");
+
+    socket.on("message", (msg) => {
+        console.log(msg.toString());
+    })
+
+    socket.on("close", () => {
+        console.log("Disconnected from browser 🚫");
+    });
+
+    socket.send("Hello, I'm server socket!");
+});
+
 server.listen(3000, handleListen);
