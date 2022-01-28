@@ -17,19 +17,22 @@ const handleListen = () => console.log("listening on http://localhost:3000");
 const server = http.createServer(app);
 // http, websocket 모두를 사용하도록 설정
 const wss = new WebSocket.Server({ server });
+const sockets = [];
 
 wss.on("connection", (socket) => {
+    sockets.push(socket);
     console.log("Connected to browser ✅");
 
     socket.on("message", (msg) => {
-        console.log(msg.toString());
+        const message = msg.toString();
+        console.log(`Browser : ${message}`);
+        
+        sockets.forEach((eachSocket) => eachSocket.send(message));
     })
 
     socket.on("close", () => {
         console.log("Disconnected from browser 🚫");
     });
-
-    socket.send("Hello, I'm server socket!");
 });
 
 server.listen(3000, handleListen);
