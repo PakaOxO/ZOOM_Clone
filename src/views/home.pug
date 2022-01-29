@@ -11,7 +11,9 @@ html(lang="en")
             h1 Joom
         main
             ul
-            form
+            form#form__nickname
+                input(type="text", placeholder="Add your nickname", required)
+            form#form__message
                 input(type="text", placeholder="write a msg", required)
                 button Send
         script(src="/public/js/app.js")

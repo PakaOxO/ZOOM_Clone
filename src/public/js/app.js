@@ -1,6 +1,7 @@
 /* HTML Obj */
 const messageList = document.querySelector("ul");
-const messageForm = document.querySelector("form");
+const nicknameForm = document.querySelector("#form__nickname")
+const messageForm = document.querySelector("#form__message");
 
 // WebSocket API로 객체 생성
 const socket = new WebSocket(`ws://${window.location.host}`);
@@ -12,7 +13,9 @@ socket.addEventListener("open", () => {
 
 // message를 받았을 때
 socket.addEventListener("message", (msg) => {
-    console.log(`Me : "${msg.data}"`);
+    const li = document.createElement('li');
+    li.innerText = msg.data;
+    messageList.appendChild(li);
 });
 
 // 통신이 종료되었을 때
@@ -21,16 +24,28 @@ socket.addEventListener("close", () => {
 });
 
 /* Functions */
-function handleSubmit(event) {
+function makeMessage(type, payload) {
+    const msg = { type, payload };
+    return JSON.stringify(msg);
+}
+
+function handleNickSubmit(event) {
+    event.preventDefault();
+    const input = nicknameForm.querySelector("input");
+    socket.send(makeMessage("nickname", input.value));
+    input.value = "";
+}
+
+function handleMsgSubmit(event) {
     event.preventDefault();
     const input = messageForm.querySelector("input");
-    
-    socket.send(input.value);
+    socket.send(makeMessage("message", input.value));
     input.value = "";
 }
 
 function init() {
-    messageForm.addEventListener("submit", handleSubmit);
+    nicknameForm.addEventListener("submit", handleNickSubmit);
+    messageForm.addEventListener("submit", handleMsgSubmit);
 }
 
 /* Runtime Logic */
