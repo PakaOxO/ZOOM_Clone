@@ -1,6 +1,8 @@
+import { doesNotMatch } from "assert";
 import express from "express";
 import http from "http";
-import WebSocket from "ws";
+// import WebSocket from "ws";
+import SocketIO from "socket.io";
 
 /* Server Basic Code */
 const app = express();
@@ -14,35 +16,45 @@ app.get("/*", (_, res) => res.redirect("/")); // 사용자가 주소 뒤에 임�
 
 // http, websocket 객체 생성
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server }); // http, websocket 모두를 사용하도록 설정
+// const wss = new WebSocket.Server({ server }); // http, websocket 모두를 사용하도록 설정
+const io = SocketIO(server);
 
 // 각 접속자 별 socket을 배열에 담아 관리
-const sockets = [];
+// const sockets = [];
 
-wss.on("connection", (socket) => {
-    console.log("Connected to browser ✅");
-    sockets.push(socket);
-    socket["nickname"] = "Unknown";
+// wss.on("connection", (socket) => {
+//     console.log("Connected to browser ✅");
+//     sockets.push(socket);
+//     socket["nickname"] = "Unknown";
 
-    socket.on("message", (msg) => {
-        const data = JSON.parse(msg);
+//     socket.on("message", (msg) => {
+//         const data = JSON.parse(msg);
 
-        switch (data.type) {
-            case "nickname":
-                console.log(data.payload);
-                socket["nickname"] = data.payload;
-                break;
-            case "message":
-                console.log(data.payload);
-                const msg = `${socket.nickname} : ${data.payload}`;
-                sockets.forEach((eachSocket) => {
-                    eachSocket.send(msg)
-                });
-        }
-    })
+//         switch (data.type) {
+//             case "nickname":
+//                 console.log(data.payload);
+//                 socket["nickname"] = data.payload;
+//                 break;
+//             case "message":
+//                 console.log(data.payload);
+//                 const msg = `${socket.nickname} : ${data.payload}`;
+//                 sockets.forEach((eachSocket) => {
+//                     eachSocket.send(msg)
+//                 });
+//         }
+//     })
 
-    socket.on("close", () => {
-        console.log("Disconnected 🚫");
+//     socket.on("close", () => {
+//         console.log("Disconnected 🚫");
+//     });
+// });
+
+io.on("connection", (socket) => {
+    socket.on("room", (msg, browserFunction) => {
+        console.log(msg);
+        setTimeout(() => {
+            browserFunction(); // Browser에서 넘겨준 함수를 10초뒤에 브라우저에서 호출하도록 설정
+        }, 10000);
     });
 });
 
