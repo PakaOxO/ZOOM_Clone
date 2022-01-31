@@ -50,11 +50,15 @@ const io = SocketIO(server);
 // });
 
 io.on("connection", (socket) => {
-    socket.on("room", (msg, browserFunction) => {
-        console.log(msg);
-        setTimeout(() => {
-            browserFunction(); // Browser에서 넘겨준 함수를 10초뒤에 브라우저에서 호출하도록 설정
-        }, 10000);
+    // Socekt.IO에서 모든 이벤트를 확인할 수 있는 메소드
+    socket.onAny((event) => {
+        console.log(`Socket event: ${event}`);
+    });
+
+    // Browser에서 방 입장 시에 발생하는 이벤트
+    socket.on("enter_room", (roomName, browserFunction) => {
+        socket.join(roomName); // 주어진 socket들은 고유한 id값을 가지는데, 해당 소켓에 room값을 set하는 명령어
+        browserFunction();
     });
 });
 
