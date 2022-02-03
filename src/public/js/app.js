@@ -24,9 +24,19 @@ function handleRoomSubmit(event) {
     input.value = "";
 }
 
+function addMessage(msg) {
+    const ul = room.querySelector("ul");
+    const li = document.createElement("li");
+    li.innerText = msg;
+    ul.appendChild(li);
+}
+
 /* HTML Obj */
 function init() {
     form.addEventListener("submit", handleRoomSubmit);
+    socket.on("welcome", () => {
+        addMessage("Someone joined");
+    });
 }
 
 /* Runtime Logic */

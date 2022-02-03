@@ -12,3 +12,5 @@ Jan 30, Install Socket.IO framework on prj and update server.js and app.js for u
 Jan 31, Update [app.js, server.js, Home.pug], Add features
                 1. Join a room when browser send room name to server with "join method" of Socket.IO API.
                 2. When browser sending room name to server, form for room submit is hided and the room name is shown at the message form.
+Feb 3, Update [app.js, server.js], Add feature
+                1. Now the room member know when someone enter the room with a message

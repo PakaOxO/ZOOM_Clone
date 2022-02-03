@@ -57,8 +57,9 @@ io.on("connection", (socket) => {
 
     // Browser에서 방 입장 시에 발생하는 이벤트
     socket.on("enter_room", (roomName, browserFunction) => {
-        socket.join(roomName); // 주어진 socket들은 고유한 id값을 가지는데, 해당 소켓에 room값을 set하는 명령어
+        socket.join(roomName.payload); // 주어진 socket들은 고유한 id값을 가지는데, 해당 소켓에 room값을 set하는 명령어
         browserFunction();
+        socket.to(roomName.payload).emit("welcome");
     });
 });
 
