@@ -50,16 +50,33 @@ const io = SocketIO(server);
 // });
 
 io.on("connection", (socket) => {
+    socket["nickname"] = "Unknown";
+
     // Socekt.IO에서 모든 이벤트를 확인할 수 있는 메소드
     socket.onAny((event) => {
         console.log(`Socket event: ${event}`);
     });
 
     // Browser에서 방 입장 시에 발생하는 이벤트
-    socket.on("enter_room", (roomName, browserFunction) => {
-        socket.join(roomName.payload); // 주어진 socket들은 고유한 id값을 가지는데, 해당 소켓에 room값을 set하는 명령어
+    socket.on("enter_room", (roomName, nickname, browserFunction) => {
+        socket.join(roomName); // 주어진 socket들은 고유한 id값을 가지는데, 해당 소켓에 room값을 set하는 명령어
+        if (nickname !== "") socket["nickname"] = nickname;
         browserFunction();
-        socket.to(roomName.payload).emit("welcome");
+        socket.to(roomName).emit("welcome", socket.nickname);
+    });
+
+    // 각 Socket 별 Room에서 나가기 직전에 발생하는 이벤트
+    socket.on("disconnecting", () => {
+        socket.rooms.forEach((room) => socket.to(room).emit("bye", socket.nickname));
+    });
+
+    socket.on("nickname", (nickname) => {
+        socket["nickname"] = nickname;
+    });
+
+    socket.on("new_message", (room, msg, browserFunction) => {
+        socket.to(room).emit("new_message", socket.nickname, msg);
+        browserFunction();
     });
 });
 
