@@ -24,7 +24,7 @@ function handleMessageSubmit(event) {
 function showRoom() {
     welcome.hidden = true;
     room.hidden = false;
-    room__h3.innerText = roomName;
+    room__h3.innerText = `Room : ${roomName}`;
 }
 
 function handleRoomSubmit(event) {
