@@ -14,3 +14,6 @@ Jan 31, Update [app.js, server.js, Home.pug], Add features
                 2. When browser sending room name to server, form for room submit is hided and the room name is shown at the message form.
 Feb 3, Update [app.js, server.js], Add feature
                 1. Now the room member know when someone enter the room with a message
+Feb 4, Update [app.js, server.js, home.pug], Add features
+                1. When user enter a room, now all the users in the room could now who entered the room
+                2. Before a user enter room, the user could choose his/her nickname
