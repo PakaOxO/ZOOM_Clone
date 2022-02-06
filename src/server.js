@@ -49,6 +49,16 @@ const io = SocketIO(server);
 //     });
 // });
 
+function publicRooms() {
+    const {sockets: {adapter: { sid, rooms }}} = io;
+    const publicRooms = [];
+
+    rooms.forEach((_, key) => {
+        if (sid.get(key) === undefined) publicRooms.push(key);
+    });
+    return publicRooms;
+}
+
 io.on("connection", (socket) => {
     socket["nickname"] = "Unknown";
 
