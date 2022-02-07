@@ -50,11 +50,11 @@ const io = SocketIO(server);
 // });
 
 function publicRooms() {
-    const {sockets: {adapter: { sid, rooms }}} = io;
+    const {sockets: {adapter: { sids, rooms }}} = io;
     const publicRooms = [];
 
     rooms.forEach((_, key) => {
-        if (sid.get(key) === undefined) publicRooms.push(key);
+        if (sids.get(key) === undefined) publicRooms.push(key);
     });
     return publicRooms;
 }
@@ -73,11 +73,16 @@ io.on("connection", (socket) => {
         if (nickname !== "") socket["nickname"] = nickname;
         browserFunction();
         socket.to(roomName).emit("welcome", socket.nickname);
+        io.sockets.emit("change_room", publicRooms());
     });
 
     // 각 Socket 별 Room에서 나가기 직전에 발생하는 이벤트
     socket.on("disconnecting", () => {
         socket.rooms.forEach((room) => socket.to(room).emit("bye", socket.nickname));
+    });
+
+    socket.on("disconnect", () => {
+        io.sockets.emit("change_room", publicRooms());
     });
 
     socket.on("nickname", (nickname) => {

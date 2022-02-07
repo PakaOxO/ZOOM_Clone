@@ -17,3 +17,6 @@ Feb 3, Update [app.js, server.js], Add feature
 Feb 4, Update [app.js, server.js, home.pug], Add features
                 1. When user enter a room, now all the users in the room could now who entered the room
                 2. Before a user enter room, the user could choose his/her nickname
+Feb 7, Update [app.js, server.js, home.pug], Add features
+                1. Now you can see following info before enter a room.
+                 - Rooms list and number of public rooms
