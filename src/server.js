@@ -2,7 +2,8 @@ import { doesNotMatch } from "assert";
 import express from "express";
 import http from "http";
 // import WebSocket from "ws";
-import SocketIO from "socket.io";
+import { Server } from "socket.io";
+import { instrument } from "@socket.io/admin-ui";
 
 /* Server Basic Code */
 const app = express();
@@ -15,9 +16,18 @@ app.get("/", (_, res) => res.render("home"));
 app.get("/*", (_, res) => res.redirect("/")); // 사용자가 주소 뒤에 임의의 다른 주소를 이어 붙였을때 home으로 redirect
 
 // http, websocket 객체 생성
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 // const wss = new WebSocket.Server({ server }); // http, websocket 모두를 사용하도록 설정
-const io = SocketIO(server);
+const io = new Server(httpServer, {
+    cors: {
+        origin: ["https://admin.socket.io"],
+        credentioals: true,
+    },
+});
+
+instrument(io, {
+    auth: false,
+})
 
 // 각 접속자 별 socket을 배열에 담아 관리
 // const sockets = [];
@@ -59,6 +69,10 @@ function publicRooms() {
     return publicRooms;
 }
 
+function countUsers(roomName) {
+    return io.sockets.adapter.rooms.get(roomName)?.size;
+}
+
 io.on("connection", (socket) => {
     socket["nickname"] = "Unknown";
 
@@ -71,14 +85,14 @@ io.on("connection", (socket) => {
     socket.on("enter_room", (roomName, nickname, browserFunction) => {
         socket.join(roomName); // 주어진 socket들은 고유한 id값을 가지는데, 해당 소켓에 room값을 set하는 명령어
         if (nickname !== "") socket["nickname"] = nickname;
-        browserFunction();
-        socket.to(roomName).emit("welcome", socket.nickname);
+        browserFunction(countUsers(roomName));
+        socket.to(roomName).emit("welcome", socket.nickname, countUsers(roomName));
         io.sockets.emit("change_room", publicRooms());
     });
 
     // 각 Socket 별 Room에서 나가기 직전에 발생하는 이벤트
     socket.on("disconnecting", () => {
-        socket.rooms.forEach((room) => socket.to(room).emit("bye", socket.nickname));
+        socket.rooms.forEach((room) => socket.to(room).emit("bye", socket.nickname, countUsers(room)-1));
     });
 
     socket.on("disconnect", () => {
@@ -95,4 +109,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(3000, () => console.log("listening on http://localhost:3000"));
+httpServer.listen(3000, () => console.log("listening on http://localhost:3000"));

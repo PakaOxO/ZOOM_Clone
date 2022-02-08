@@ -24,10 +24,10 @@ function handleMessageSubmit(event) {
     input.value = "";
 }
 
-function showRoom() {
+function showRoom(cnt_users) {
     welcome.hidden = true;
     room.hidden = false;
-    room__h3.innerText = `Room : ${roomName}`;
+    room__h3.innerText = `Room : ${roomName}(${cnt_users})`;
 }
 
 function handleRoomSubmit(event) {
@@ -39,7 +39,8 @@ function handleRoomSubmit(event) {
     roomName = input__roomname.value;
     nickname = input__nickname.value;
     socket.emit("enter_room", roomName, nickname, showRoom);
-    input.value = "";
+    input__roomname.value = "";
+    input__nickname.value = "";
 }
 
 function addMessage(msg) {
@@ -53,12 +54,14 @@ function addMessage(msg) {
 function init() {
     welcome__form.addEventListener("submit", handleRoomSubmit);
     room__msg.addEventListener("submit", handleMessageSubmit);
-    socket.on("welcome", (name) => {
+    socket.on("welcome", (name, cnt_users) => {
         addMessage(`${name} joined`);
+        room__h3.innerText = `Room : ${roomName}(${cnt_users})`;
     });
 
-    socket.on("bye", (name) => {
+    socket.on("bye", (name, cnt_users) => {
         addMessage(`${name} is left`);
+        room__h3.innerText = `Room : ${roomName}(${cnt_users})`;
     });
 
     socket.on("new_message", (name, msg) => {
