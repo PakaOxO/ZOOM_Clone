@@ -23,4 +23,4 @@ Feb 7, Update [app.js, server.js, home.pug], Add features
 Feb 8, Update [app.js, server.js], Add features
                 - Users can know how many people are in their room now
                     (and this will be changed when other users join or go out the room)
-
+Feb 9, Clear [app.js, server.js, home.pug] for new video app.
