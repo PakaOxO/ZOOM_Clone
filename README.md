@@ -24,3 +24,6 @@ Feb 8, Update [app.js, server.js], Add features
                 - Users can know how many people are in their room now
                     (and this will be changed when other users join or go out the room)
 Feb 9, Clear [app.js, server.js, home.pug] for new video app.
+Feb 10, 12, Update [app.js, home.pug] for adding features
+                - Can turn on/off users cameras and mic
+                - Show users cameras list in the select box
