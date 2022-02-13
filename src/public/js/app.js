@@ -35,16 +35,24 @@ function init() {
         }
     });
 
-    async function getCamearas() {
+    select_camera.addEventListener("input", async () => {
+        await getMedia(select_camera.value);
+    });
+
+    async function getCameras() {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
             const cameras = devices.filter((device) => device.kind === "videoinput");
+            const currentCamera = myStream.getVideoTracks()[0];
 
             console.log(cameras);
             cameras.forEach((camera) => {
                 const tag_option = document.createElement("option");
                 tag_option.value = camera.deviceId;
                 tag_option.innerText = camera.label;
+                if (currentCamera.label = camera.label) {
+                    tag_option.selected = true;
+                }
 
                 select_camera.appendChild(tag_option);
             });
@@ -53,16 +61,23 @@ function init() {
         }
     }
 
-    async function getMedia() {
+    async function getMedia(deviceId) {
+        const initialConstraints = {
+            audio: true,
+            video: { facingMode: "user" },
+        }
+        const cameraConstrains = {
+            audio: true,
+            video: { deviceId: { exact: deviceId } },
+        }
+
         try {
             myStream = await navigator.mediaDevices.getUserMedia(
-                {
-                    audio: true,
-                    video: true,
-                }
+                deviceId ? cameraConstrains : initialConstraints
             );
             myFace.srcObject = myStream;
-            await getCamearas();
+
+            if (!deviceId) await getCameras();
         } catch(e) {
             console.log(e);
         }
