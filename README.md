@@ -27,5 +27,8 @@ Feb 9, Clear [app.js, server.js, home.pug] for new video app.
 Feb 10, 12, Update [app.js, home.pug] for adding features
                 - Can turn on/off users cameras and mic
                 - Show users cameras list in the select box
-Feb 13, Updaet [app.js, home.pug] for adding feature
+Feb 13, Update [app.js, home.pug] for adding feature
                 - User can change what camera they will use. When they select, the selected camera show their faces on the screen.
+Feb 14, Update [app.js, server.js, home.pug], for adding features
+                - Add WebRTC API to the project
+                - Show/Hide the Welcome section/Call section when user join the joom website first

@@ -21,4 +21,12 @@ const httpServer = http.createServer(app);
 // const wss = new WebSocket.Server({ server }); // http, websocket 모두를 사용하도록 설정
 const io = SocketIO(httpServer);
 
+io.on("connection", socket => {
+    socket.on("join_room", (roomName, browserFn) => {
+        socket.join(roomName);
+        browserFn();
+        socket.to(roomName).emit("welcome");
+    });
+});
+
 httpServer.listen(3000, () => console.log("listening on http://localhost:3000"));
