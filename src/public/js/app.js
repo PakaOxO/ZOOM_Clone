@@ -21,11 +21,34 @@ function init() {
     let muted = false;
     let cameraOff = false;
     let roomName = "";
+    let myPeerConnection;
 
-    function startMedia() {
+    /* Socket Code */
+    socket.on("welcome", async () => {
+        const offer = await myPeerConnection.createOffer();
+        myPeerConnection.setLocalDescription(offer);
+        socket.emit("offer", offer, roomName);
+
+        console.log("Someone joined");
+    });
+
+    socket.on("offer", (offer) => {
+        console.log(offer);
+    });
+
+    /* WebRTC Code */
+    function makeConnection() {
+        myPeerConnection = new RTCPeerConnection();
+        myStream.getTracks().forEach((track) => {
+            myPeerConnection.addTrack(track, myStream);
+        });
+    }
+
+    async function startMedia() {
         welcome.hidden = true;
         call.hidden = false;
-        getMedia();
+        await getMedia();
+        makeConnection();
     }
 
     async function getCameras() {
@@ -65,7 +88,9 @@ function init() {
             );
             myFace.srcObject = myStream;
 
-            if (!deviceId) await getCameras();
+            if (!deviceId) {
+                await getCameras();
+            }
         } catch(e) {
             console.log(e);
         }
@@ -106,11 +131,6 @@ function init() {
 
     select_camera.addEventListener("input", async () => {
         await getMedia(select_camera.value);
-    });
-
-    /* Socket Code */
-    socket.on("welcome", () => {
-        console.log("Someone joined");
     });
 }
 

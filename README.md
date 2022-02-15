@@ -32,3 +32,4 @@ Feb 13, Update [app.js, home.pug] for adding feature
 Feb 14, Update [app.js, server.js, home.pug], for adding features
                 - Add WebRTC API to the project
                 - Show/Hide the Welcome section/Call section when user join the joom website first
+Feb 15, Update [app.js, server.js], Add script for sharing an offer btw users
