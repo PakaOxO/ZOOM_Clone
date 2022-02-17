@@ -33,3 +33,5 @@ Feb 14, Update [app.js, server.js, home.pug], for adding features
                 - Add WebRTC API to the project
                 - Show/Hide the Welcome section/Call section when user join the joom website first
 Feb 15, Update [app.js, server.js], Add script for sharing an offer btw users
+Feb 16, 17 Update [app.js, server.js, home.pug], Add script for p2p video chat
+                - Check WebRTC IceCandidate, STUNSERVER

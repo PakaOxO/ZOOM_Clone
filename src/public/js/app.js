@@ -88,14 +88,27 @@ function init() {
     }
 
     function makeConnection() {
-        myPeerConnection = new RTCPeerConnection();
+        myPeerConnection = new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: [
+                        "stun:stun.l.google.com:19302",
+                        "stun:stun1.l.google.com:19302",
+                        "stun:stun2.l.google.com:19302",
+                        "stun:stun3.l.google.com:19302",
+                        "stun:stun4.l.google.com:19302",
+                    ],
+                }
+            ],
+        });
         myPeerConnection.addEventListener("icecandidate", (data) => {
             socket.emit("ice", data.candidate, roomName);
             console.log("Sent a candidate");
         });
         myPeerConnection.addEventListener("addstream", (data) => {
             // addstream event is deprecated and safari no support!!
-            // httpsL//developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addstream_event
+            // https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addstream_event
+        // myPeerConnection.addEventListener("track", (data) => {
             console.log("Got an event from my peer");
             console.log("Peer's stream : ", data.stream);
             console.log("myStream : ", myStream);
@@ -118,7 +131,9 @@ function init() {
                 const tag_option = document.createElement("option");
                 tag_option.value = camera.deviceId;
                 tag_option.innerText = camera.label;
-                if (currentCamera.label = camera.label) {
+
+
+                if (currentCamera.label == camera.label) {
                     tag_option.selected = true;
                 }
 
@@ -166,6 +181,13 @@ function init() {
 
     select_camera.addEventListener("input", async () => {
         await getMedia(select_camera.value);
+        if (myPeerConnection) {
+            const videoTrack = myStream.getVideoTracks()[0];
+            const videoSender = myPeerConnection.getSender().find((sender) => {
+                sender.track.kind == "video";
+            });
+            videoSender.replaceTrack(videoTrack);
+        }
     });
 }
 
