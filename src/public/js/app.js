@@ -8,9 +8,9 @@ const frm_welcome = welcome.querySelector("form");
 // Call Section
 const call = document.querySelector("#call");
 const myFace = document.querySelector("#myFace");
-const btn_mute = document.querySelector("#myStream #mute");
-const btn_camera = document.querySelector("#myStream #camera");
-const select_camera = document.querySelector("#myStream #myCameras");
+const btn_mute = document.querySelector("#menu #mute");
+const btn_camera = document.querySelector("#menu #camera");
+const select_camera = document.querySelector("#menu #myCameras");
 
 const peerFace = document.querySelector("#peerFace");
 
@@ -152,6 +152,10 @@ function init() {
         await initCall();
 
         roomName = input.value;
+
+        const h2_roomName = call.querySelector("#roomName");
+        h2_roomName.innerText = `Room : ${roomName}`;
+
         socket.emit("join_room", roomName);
         input.value = "";
     });

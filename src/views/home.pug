@@ -4,24 +4,27 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
         title Joom
+        style
+            include style.css
     body
-        header
-            h1 Joom
         main
             div#welcome
+                h1 Video Chat
                 form
                     input(type="text", placeholder="room name", required)
                     button Enter Room 
             div#call
-                div#myStream
+                h2#roomName
+                div#streams
                     <!-- "playsinline": 모바일에서 영상을 재생할 때 자동으로 전체 화면이 되는 것을 방지 -->
-                    video#myFace(autoplay, playsinline, width="400", height="400")
+                    div.videoBox
+                        video#myFace(autoplay, playsinline, width="400", height="400")
+                    div.videoBox
+                        video#peerFace(autoplay, playsinline, width="400", height="400")
+                div#menu
                     button#mute Mute
                     button#camera Turn Camera Off
                     select#myCameras
-                div#peerStream
-                    video#peerFace(autoplay, playsinline, width="400", height="400")
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js")

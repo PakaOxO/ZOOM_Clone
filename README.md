@@ -35,3 +35,5 @@ Feb 14, Update [app.js, server.js, home.pug], for adding features
 Feb 15, Update [app.js, server.js], Add script for sharing an offer btw users
 Feb 16, 17 Update [app.js, server.js, home.pug], Add script for p2p video chat
                 - Check WebRTC IceCandidate, STUNSERVER
+Feb 20 Add [style.css], Add stylesheet
+                - END PROJECT

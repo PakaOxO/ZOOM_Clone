@@ -1,0 +1,104 @@
+body {
+    background-color: #aaa;
+}
+
+input {
+    border: 1px solid #806040;
+    border-radius: 5px;
+    height: 30px;
+    text-indent: 10px;
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: #806040;
+    width: 100px;
+    height: 30px;
+    color: #eee;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+button:hover {
+    font-weight: 600;
+}
+
+#welcome {
+    margin: 100px auto 0 auto;
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #fff;
+    text-align: center;
+    box-shadow: 0px 5px 10px #555;
+}
+
+#welcome h1 {
+    padding-top: 20px;
+    color: #806040;
+}
+
+#welcome form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#welcome form input {
+    width: 80%;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+#welcome form button {
+    width: 80%;
+}
+
+#call {
+    background-color: #fff;
+    width: 840px;
+    height: 520px;
+    margin: 20px auto 0 auto;
+    padding-top: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#call #roomName {
+    color: #806040;
+    margin: 0;
+}
+
+#call #streams {
+    display: flex;
+    justify-content: center;
+}
+
+#call #streams .videoBox {
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+#call #streams .videoBox video {
+    object-fit: none;
+}
+
+#call #menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#call #menu #camera {
+    width: 130px;
+}
+
+#call #menu select {
+    height: 30px;
+    margin: 0 5px;
+    border-radius: 5px;
+}
